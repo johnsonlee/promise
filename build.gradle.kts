@@ -14,8 +14,10 @@ buildscript {
 plugins {
     kotlin("jvm") version embeddedKotlinVersion
     kotlin("kapt") version embeddedKotlinVersion
+    id("application")
     id("io.codearte.nexus-staging") version "0.21.2"
     id("de.marcphilipp.nexus-publish") version "0.4.0"
+    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 val OSSRH_USERNAME = project.properties["OSSRH_USERNAME"] as? String ?: System.getenv("OSSRH_USERNAME")
@@ -30,7 +32,6 @@ repositories {
 apply(from = file("gradle/test.gradle.kts"))
 
 allprojects {
-    apply(plugin = "java-library")
     apply(plugin = "signing")
     apply(plugin = "io.johnsonlee.buildprops")
 
@@ -137,3 +138,6 @@ nexusStaging {
     delayBetweenRetriesInMillis = 3000
 }
 
+application {
+    mainClassName = "io.johnsonlee.promise.MainKt"
+}
